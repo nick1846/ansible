@@ -1,0 +1,20 @@
+---
+- hosts: web_servers    
+  roles:
+    - apache    
+    - php
+    - git
+    - setup
+    
+- hosts: db_servers 
+  roles:
+    - postgres    
+
+- hosts: admin_servers 
+  roles:
+    - pgadmin   
+    
+  
+
+  
+  

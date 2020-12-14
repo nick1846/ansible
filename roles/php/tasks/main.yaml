@@ -1,0 +1,32 @@
+- name: yum update
+  become: true
+  yum: 
+    name: "*"
+    state: latest
+
+- name: yum install epel
+  become: true
+  yum: 
+    name: epel-release.noarch
+    state: latest
+  
+- name: install remi repo rpm
+  become: true
+  yum:
+    name:
+    - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    state: present
+
+- name: install php
+  become: true
+  yum: 
+    enablerepo: "remi,remi-php74"
+    name: ['php-cli', 'php-common', 'php-fpm', 'php-json', 'php-mysqlnd', 'php-opcache', 'php-pdo', 'php-pgsql']
+
+- name: restart apache 
+  become: yes
+  service:
+    name: httpd
+    state: restarted
+  
+ 
