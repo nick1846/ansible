@@ -1,0 +1,23 @@
+---
+- name: Clone a repo with separate git directory
+  git:
+    repo: "{{ git_repo }}"  
+    dest: /home/ansible/{{ git_folder }}
+
+
+- name: open firewall port for service
+  become: yes
+  firewalld:
+    service: "{{ firewall_service }}" 
+    zone: public
+    immediate: yes # this is the firewall-cmd --reload
+    permanent: true
+    state: enabled
+
+- name: copy files on remote servers
+  become: yes
+  copy:
+    src: "{{ src_path }}"
+    dest: "{{ dest_path }}"
+    remote_src: yes 
+    

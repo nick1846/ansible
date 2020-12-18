@@ -1,11 +1,11 @@
+[web_servers] 
+
+10.0.0.101
+
 [db_servers]
 
 10.0.0.24
 
-[web_servers]
+[docker_servers]
 
-10.0.0.101
-
-[admin_servers]
-
-10.0.0.9
+#10.0.0.9
