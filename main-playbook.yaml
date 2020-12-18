@@ -1,18 +1,18 @@
 ---
-- hosts: web_servers    
+- hosts: web_servers 
   roles:
-    - apache    
-    - php
-    - git
-    - setup
+    - web
+    - websetup
     
 - hosts: db_servers 
   roles:
-    - postgres    
+    - db
+    - dbsetup    
 
-- hosts: admin_servers 
+- hosts: docker_servers 
   roles:
-    - pgadmin   
+    - docker 
+    - dockersetup  
     
   
 

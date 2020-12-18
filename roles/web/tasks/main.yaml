@@ -1,0 +1,31 @@
+---
+
+- name: install packages
+  become: true
+  yum:
+    name: "{{ package }}"
+    state: present
+
+
+- name: install repo rpm 
+  become: true
+  yum:
+    name: 
+      - "{{ repo_rpm }}" 
+    state: present
+
+
+- name: install from repo rpm
+  become: true
+  yum: 
+    enablerepo: "{{ repo_name }}" 
+    name: "{{ repo_package }}" 
+  notify: restart httpd
+
+
+- name: start and enable service 
+  become: yes
+  service:
+    name: "{{ service }}" 
+    state: started
+    enabled: yes

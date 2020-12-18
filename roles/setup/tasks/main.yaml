@@ -1,3 +1,0 @@
-- name: copy webapp into apache
-  become: yes
-  shell: cp -r /home/ansible/web-project/docker-compose/web/. /var/www/html/
