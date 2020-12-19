@@ -1,11 +1,20 @@
 ---
+
+- name: Start and enable service 
+  become: yes
+  service:
+    name: "{{ service }}" 
+    state: started
+    enabled: yes
+
+    
 - name: Clone a repo with separate git directory
   git:
     repo: "{{ git_repo }}"  
     dest: /home/ansible/{{ git_folder }}
 
 
-- name: open firewall port for service
+- name: Open firewall port for service
   become: yes
   firewalld:
     service: "{{ firewall_service }}" 
@@ -14,7 +23,7 @@
     permanent: true
     state: enabled
 
-- name: copy files on remote servers
+- name: Copy files on remote servers
   become: yes
   copy:
     src: "{{ src_path }}"
