@@ -1,4 +1,4 @@
-- name: restart httpd 
+- name: Restart httpd 
   become: yes
   service:
     name: httpd

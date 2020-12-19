@@ -1,0 +1,20 @@
+---
+
+- name: Check if database is already initialized
+  become: true
+  stat:
+    path: "/var/lib/pgsql/12/data/PG_VERSION"
+  register: init_status
+
+- name: Initialize the master database
+  become: true
+  shell: /usr/pgsql-12/bin/postgresql-12-setup initdb
+  when: init_status.stat.exists == False
+  
+- name: Start and enable service 
+  become: yes
+  service:
+    name: "{{ service }}" 
+    state: started
+    enabled: yes
+  when: init_status.stat.exists == True
