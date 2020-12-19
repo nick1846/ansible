@@ -23,6 +23,8 @@ repo_package:
   - postgresql12-server
   - postgresql12-contrib
   - python3-psycopg2
+  - python-psycopg2
+  - libsemanage-python
 
 #start and enable service 
 
@@ -30,15 +32,15 @@ service: postgresql-12
 
 #Clone a repo
 
-#git_repo: https://github.com/nick1846/docker.git
+git_repo: https://github.com/nick1846/docker.git
 
 #git destination path
 
-#git_folder: 
+git_folder: web-project
 
 #open firewall port for service
 
-##firewall_service: 
+firewall_service: postgresql
 
 #copy files from [src_path] to [dest_path] on remote servers
 
