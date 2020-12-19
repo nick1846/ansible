@@ -6,10 +6,12 @@
     path: "/var/lib/pgsql/12/data/PG_VERSION"
   register: init_status
 
+
 - name: Initialize the master database
   become: true
   shell: /usr/pgsql-12/bin/postgresql-12-setup initdb
   when: init_status.stat.exists == False
+
   
 - name: Start and enable service 
   become: yes
@@ -18,3 +20,69 @@
     state: started
     enabled: yes
   when: init_status.stat.exists == True
+
+
+- name: Add new configuration to "postgresql.conf" - listen All
+  become: yes
+  blockinfile:
+    create: yes
+    dest: /var/lib/pgsql/12/data/postgresql.conf
+    block: |
+      listen_addresses = '*'
+      listen_addresses = 'localhost'
+
+
+- name: Add new configuration to "pg_hba.conf" - enable the remote connection to the server
+  become: yes
+  blockinfile:
+    dest: /var/lib/pgsql/12/data/pg_hba.conf
+    block: |
+      host    all             all             0.0.0.0/0                md5
+  register: file_changed    
+
+
+- name: Restart service 
+  become: yes
+  service:
+    name: "{{ service }}" 
+    state: restarted
+  when: file_changed.changed
+
+    
+- name: Clone a repo with separate git directory
+  git:
+    repo: "{{ git_repo }}"  
+    dest: /home/ansible/{{ git_folder }}
+
+
+- name: Open firewall port for service
+  become: yes
+  firewalld:
+    service: "{{ firewall_service }}" 
+    zone: public
+    immediate: yes # this is the firewall-cmd --reload
+    permanent: true
+    state: enabled
+
+
+- name: Create PostgreSQL databases if no present
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: devops_db    
+    login_password: postgres2020
+    login_user: postgres   
+    owner: postgres
+    state: present
+ 
+
+- name: Run queries from SQL script
+  become: yes
+  become_user: postgres
+  postgresql_query:
+    db: devops_db
+    login_password: postgres2020
+    login_user: postgres
+    query: "CREATE TABLE IF NOT EXISTS accounts ( user_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, username VARCHAR(50) UNIQUE NOT NULL, password VARCHAR(255) NOT NULL, email VARCHAR(50) UNIQUE NOT NULL );"
+   
+    

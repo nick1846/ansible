@@ -6,6 +6,7 @@ package:
   - httpd
   - git
   - epel-release.noarch
+  - libsemanage-python
   
 
 #install repo-rpms
