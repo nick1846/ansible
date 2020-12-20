@@ -1,0 +1,33 @@
+---
+#install packages
+
+packages: 
+  - "*"    
+  - epel-release
+  - https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+  - postgresql12-server
+  - postgresql12-contrib
+  - python3-psycopg2
+  - python-psycopg2
+
+
+#enablerepo
+
+repo_name: pgdg12  
+
+#start and enable service 
+
+service_name: postgresql-12
+
+#open firewall port for service
+
+firewall_service: postgresql
+
+
+
+
+  
+
+
+
+

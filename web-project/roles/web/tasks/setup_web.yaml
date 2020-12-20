@@ -1,0 +1,21 @@
+---
+
+- name: Configure SELinux with boolean   
+  seboolean:
+    name: "{{ service_name_selinux }}" 
+    state: true
+    persistent: yes
+  
+    
+- name: Clone a repo with separate git directory
+  git:
+    repo: "{{ git_repo_name }}"  
+    dest: /home/ansible/{{ git_folder_name }}
+
+
+- name: Copy files between directories 
+  copy:
+    src: "{{ src_path }}"
+    dest: "{{ dest_path }}"
+    remote_src: yes 
+    

@@ -1,0 +1,62 @@
+---
+#install packages
+
+packages: 
+  - "*"
+  - httpd
+  - git
+  - epel-release.noarch
+  - libsemanage-python 
+  - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+  - php
+  - php-cli 
+  - php-common
+  - php-fpm
+  - php-json
+  - php-opcache
+  - php-pdo
+  - php-pgsql
+  - php-mcrypt
+  - php-curl
+  - php-mysqlnd
+
+#enablerepo
+
+repo_name:
+  - remi
+  - remi-php74
+   
+#start and enable service 
+
+service_name: httpd
+state: started
+enable: yes
+
+#Clone a repo
+
+git_repo_name: https://github.com/nick1846/docker.git
+
+#git destination path
+
+git_folder_name: web-project
+
+#open firewall port for service
+
+service_name_firewall: http
+
+#Configure SELinux with boolean
+
+service_name_selinux: httpd_can_network_connect_db
+
+#Copy files from [src_path] to [dest_path] 
+
+src_path: /home/ansible/web-project/docker-compose/web/  
+
+dest_path: /var/www/html/
+
+
+  
+
+
+
+
