@@ -1,18 +1,19 @@
 ---
 - hosts: web_servers 
+  become: True
   roles:
-    - web
-    - websetup
+    - web   
     
 - hosts: db_servers 
+  become: True
   roles:
-    - db
-    - dbsetup    
+    - db     
 
 - hosts: docker_servers 
+  become: True
   roles:
     - docker 
-    - dockersetup  
+   
     
   
 

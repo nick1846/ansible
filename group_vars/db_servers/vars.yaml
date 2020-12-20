@@ -1,52 +1,29 @@
 ---
 #install packages
 
-package: 
-  - "*"
-  #- httpd
-  - git
+packages: 
+  - "*"    
   - epel-release
-
-
-#install repo-rpms
-
-repo_rpm: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-
-#enablerepo
-
-repo_name: pgdg12
-  
-
-#install packages from repo
-
-repo_package: 
+  - https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
   - postgresql12-server
   - postgresql12-contrib
   - python3-psycopg2
   - python-psycopg2
-  - libsemanage-python
+
+
+#enablerepo
+
+repo_name: pgdg12  
 
 #start and enable service 
 
-service: postgresql-12
-
-#Clone a repo
-
-git_repo: https://github.com/nick1846/docker.git
-
-#git destination path
-
-git_folder: web-project
+service_name: postgresql-12
 
 #open firewall port for service
 
 firewall_service: postgresql
 
-#copy files from [src_path] to [dest_path] on remote servers
 
-#src_path: 
-
-#dest_path: 
 
 
   

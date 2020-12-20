@@ -1,0 +1,83 @@
+---
+
+- name: Check if database is already initialized  
+  stat:
+    path: "/var/lib/pgsql/12/data/PG_VERSION"
+  register: init_status
+
+
+- name: Initialize the master database  
+  shell: /usr/pgsql-12/bin/postgresql-12-setup initdb
+  when: init_status.stat.exists == False
+
+  
+- name: Start and enable service  
+  service:
+    name: "{{ service_name }}" 
+    state: started
+    enabled: yes
+  when: init_status.stat.exists == True
+
+
+- name: Add new configuration to "postgresql.conf" - listen All  
+  blockinfile:
+    create: yes
+    dest: /var/lib/pgsql/12/data/postgresql.conf
+    block: |
+      listen_addresses = '*'
+      listen_addresses = 'localhost'
+
+
+- name: Add new configuration to "pg_hba.conf" - enable the remote connection to the server  
+  blockinfile:
+    dest: /var/lib/pgsql/12/data/pg_hba.conf
+    block: |
+      host    all             all             0.0.0.0/0                md5
+  register: file_changed    
+
+
+- name: Restart service  
+  service:
+    name: "{{ service_name }}" 
+    state: restarted
+  when: file_changed.changed
+
+    
+
+- name: Create PostgreSQL databases if no present  
+  become_user: postgres
+  postgresql_db:
+    name: devops_db
+    login_user: postgres
+    login_password: "postgres2020"    
+    port: 5432    
+    state: present
+
+ 
+- name: Create nick user for Postgres  
+  become_user: postgres
+  postgresql_user:     
+    name: nick
+    password: "postgres2020"
+    login_password: "postgres2020"    
+    state: present  
+  environment:
+    PGOPTIONS: "-c password_encryption=scram-sha-256"
+
+
+- name: Create table if not exist  
+  become_user: postgres
+  postgresql_table:
+    db: devops_db
+    login_password: "postgres2020" 
+    name: accounts
+    columns:
+      - user_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+      - username VARCHAR(50) UNIQUE NOT NULL
+      - password VARCHAR(255) NOT NULL
+      - email VARCHAR(50) UNIQUE NOT NULL
+    state: present
+
+
+ 
+    
