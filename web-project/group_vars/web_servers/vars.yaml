@@ -54,6 +54,8 @@ src_path: /home/ansible/web-project/docker-compose/web/
 
 dest_path: /var/www/html/
 
+host: host=10.0.0.239
+
 
   
 

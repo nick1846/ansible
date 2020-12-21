@@ -1,0 +1,27 @@
+---
+
+- name: Create PostgreSQL databases if no present    
+  postgresql_db:
+    name: devops_db            
+    state: present
+
+ 
+- name: Create nick user for Postgres    
+  postgresql_user:     
+    name: postgres
+    password: "postgres"   
+    encrypted: yes   
+    state: present
+  
+
+
+- name: Create table if not exist    
+  postgresql_table:
+    db: devops_db    
+    name: accounts
+    columns:
+      - user_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+      - username VARCHAR(50) UNIQUE NOT NULL
+      - password VARCHAR(255) NOT NULL
+      - email VARCHAR(50) UNIQUE NOT NULL
+    state: present
