@@ -1,0 +1,21 @@
+---
+
+- name: Restart service  
+  service:
+    name: "{{ service_name }}" 
+    state: restarted
+
+
+- name: Find files
+  find:
+    paths: /var/www/html/
+    patterns: "*.php"
+  register: php
+
+
+- name: Replace host
+  replace:
+    path: "{{ item.path }}"
+    regexp: '^(.*)host=(.*)$'
+    replace: '\1host=10.0.0.238\2'
+  with_items: "{{ php.files }}"  

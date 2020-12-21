@@ -1,0 +1,15 @@
+---
+
+- name: Include task to setup web
+  include: setup_web.yaml
+  when: inventory_hostname in groups ['web_servers']
+
+
+- name: Include task to setup postgres for web
+  include: setup_postgres.yaml
+  when: inventory_hostname in groups ['db_servers']
+
+
+- name: Include task to setup web using docker
+  include: setup_docker.yaml
+  when: inventory_hostname in groups ['docker_servers']

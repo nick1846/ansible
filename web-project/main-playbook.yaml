@@ -1,18 +1,10 @@
 ---
-- hosts: web_servers 
+- hosts: all 
   become: True
   roles:
-    - web   
-    
-- hosts: db_servers 
-  become: True
-  roles:
-    - db     
+    - superweb    
 
-- hosts: docker_servers 
-  become: True
-  roles:
-    - docker 
+ 
    
     
   
