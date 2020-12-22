@@ -1,20 +1,10 @@
 ---
+- name: Include task to install packages for DB
+  include: installation.yaml
+  
 
-- name: Install packages
-  yum: 
-    enablerepo: "{{ repo_name }}" 
-    name: "{{ packages }}" 
-    state: present
-
-
-- name: Open firewall port for service
-  become: yes
-  firewalld:
-    service: "{{ firewall_service }}" 
-    zone: public
-    immediate: yes # this is the firewall-cmd --reload
-    permanent: true
-    state: enabled
+- name: Include task to configure Firewall and Selinux
+  include: security.yaml
 
 
 - name: Check if database is already initialized  
@@ -39,17 +29,21 @@
 - name: Add new configuration to "postgresql.conf" - listen All  
   blockinfile:
     create: yes
-    dest: /var/lib/pgsql/12/data/postgresql.conf
+    dest: "{{ postgresql_config_path }}/postgresql.conf" 
     block: |
-      listen_addresses = '*'
-      
+      listen_addresses = '*' 
+  notify: Restart service 
+    
 
-- name: Add new configuration to "pg_hba.conf" - enable the remote connection to the server  
-  blockinfile:
-    dest: /var/lib/pgsql/12/data/pg_hba.conf
-    block: |
-      host    all             all             0.0.0.0/0                md5
+- name: Configure host based authentication 
+  copy:
+    src: "pg_hba.conf"
+    dest: "{{ postgresql_config_path }}/pg_hba.conf"
+    owner: postgres
+    group: postgres
+    mode: 0600
   notify: Restart service
+  
   
     
 - name: Include task to create PG_roles and PG_databases

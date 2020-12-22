@@ -13,9 +13,9 @@
   register: php
 
 
-- name: Replace host
+- name: Replace host 
   replace:
     path: "{{ item.path }}"
-    regexp: '^(.*)host=(.*)$'
-    replace: '\1host=10.0.0.238\2'
-  with_items: "{{ php.files }}"  
+    regexp: '^(.*)host=postgres(.*)$'
+    replace: '\1host=10.0.0.217\2'
+  with_items: "{{ php.files }}" 

@@ -1,21 +1,24 @@
 ---
 
-- name: Create PostgreSQL databases if no present    
+- name: Create PostgreSQL databases if no present   
+  become_user: postgres 
   postgresql_db:
     name: devops_db            
     state: present
 
  
-- name: Create nick user for Postgres    
+- name: Create nick user for Postgres   
+  become_user: postgres 
   postgresql_user:     
     name: postgres
-    password: "postgres"   
+    password: postgres2020   
     encrypted: yes   
     state: present
   
 
 
-- name: Create table if not exist    
+- name: Create table if not exist  
+  become_user: postgres 
   postgresql_table:
     db: devops_db    
     name: accounts

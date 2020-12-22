@@ -1,32 +1,17 @@
 ---
+- name: Include task to install packages for Web
+  include: installation.yaml
 
-- name: Install packages  
-  yum: 
-    enablerepo: "{{ repo_name }}" 
-    name: "{{ packages }}" 
 
+- name: Include task to configure Firewall and Selinux
+  include: security.yaml
+  
 
 - name: Start and enable service  
   service:
     name: "{{ service_name }}" 
     state: "{{ state }}" 
     enabled: "{{ enable }}" 
-
-
-- name: Open firewall port for service  
-  firewalld:
-    service: "{{ service_name_firewall }}" 
-    zone: public
-    immediate: yes # this is the firewall-cmd --reload
-    permanent: true
-    state: enabled
-
-
-- name: Configure SELinux with boolean   
-  seboolean:
-    name: "{{ service_name_selinux }}" 
-    state: true
-    persistent: yes
   
     
 - name: Clone a repo with separate git directory
@@ -36,27 +21,21 @@
     update: no
 
 
-- name: Copy files between directories 
-  copy:
+- name: Check if file already exists
+  stat:
+    path: /var/www/html/login.php
+  register: files
+
+
+- name: Copy files between directories     
+  copy:    
+    remote_src: yes
     src: "{{ src_path }}"
-    dest: "{{ dest_path }}"
-    remote_src: yes 
-    force: no
-  
-
-- name: Find .php files
-  find:
-    paths: /var/www/html/
-    patterns: "*.php"
-  register: php
-
-
-- name: Replace host in .php files
-  replace:
-    path: "{{ item.path }}"
-    regexp: '^(.*)host=postgres(.*)$'
-    replace: '\1host=10.0.0.238\2'
-  with_items: "{{ php.files }}"  
+    dest: "{{ dest_path }}"  
+  notify: 
+    - Find files
+    - Replace host  
+  when: files.stat.exists == False
 
 
 

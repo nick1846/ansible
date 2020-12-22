@@ -1,13 +1,11 @@
 ---
 #install packages
 
-packages: 
-  - "*"
+packages:   
   - httpd
   - git
-  - epel-release.noarch
+  - epel-release
   - libsemanage-python 
-  - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
   - php
   - php-cli 
   - php-common
@@ -18,10 +16,11 @@ packages:
   - php-pgsql
   - php-mcrypt
   - php-curl
-  - php-mysqlnd
 
-#enablerepo
 
+#Install and enable repo
+
+repo_package: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 repo_name:
   - remi
   - remi-php74
@@ -50,15 +49,6 @@ service_name_selinux: httpd_can_network_connect_db
 
 #Copy files from [src_path] to [dest_path] 
 
-src_path: /home/ansible/web-project/docker-compose/web/  
+src_path: /home/ansible/web-project/docker-compose/web/
 
 dest_path: /var/www/html/
-
-host: host=10.0.0.239
-
-
-  
-
-
-
-
