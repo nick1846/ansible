@@ -2,17 +2,19 @@
 #install packages
 
 packages: 
-  - "*"    
-  - epel-release
-  - https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+  #- "*"    
+  - epel-release  
   - postgresql12-server  
   - postgresql12-contrib
   - python3-psycopg2
+  - postgresql-libs
+  - postgresql-devel
   - python-psycopg2
 
 
-#enablerepo
+#Install and enable repo
 
+repo_package: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 repo_name: pgdg12  
 
 #start and enable service 

@@ -1,10 +1,6 @@
 ---
-
-- name: Install packages  
-  yum: 
-    enablerepo: "{{ repo_name }}" 
-    name: "{{ packages }}" 
-
+- name: Include task to install packages for Web
+  include: installation.yaml
 
 - name: Start and enable service  
   service:
@@ -41,7 +37,7 @@
     src: "{{ src_path }}"
     dest: "{{ dest_path }}"
     remote_src: yes 
-    force: no
+    
   
 
 - name: Find .php files
@@ -55,7 +51,7 @@
   replace:
     path: "{{ item.path }}"
     regexp: '^(.*)host=postgres(.*)$'
-    replace: '\1host=10.0.0.238\2'
+    replace: '\1host=10.0.0.188\2'
   with_items: "{{ php.files }}"  
 
 

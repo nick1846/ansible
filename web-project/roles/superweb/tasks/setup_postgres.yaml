@@ -1,10 +1,6 @@
 ---
-
-- name: Install packages
-  yum: 
-    enablerepo: "{{ repo_name }}" 
-    name: "{{ packages }}" 
-    state: present
+- name: Include task to install packages for DB
+  include: installation.yaml
 
 
 - name: Open firewall port for service
@@ -42,7 +38,8 @@
     dest: /var/lib/pgsql/12/data/postgresql.conf
     block: |
       listen_addresses = '*'
-      
+  notify: Restart service 
+    
 
 - name: Add new configuration to "pg_hba.conf" - enable the remote connection to the server  
   blockinfile:
