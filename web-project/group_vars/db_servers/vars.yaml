@@ -1,15 +1,14 @@
 ---
 #install packages
 
-packages: 
-  #- "*"    
+packages:   
   - epel-release  
   - postgresql12-server  
-  - postgresql12-contrib
-  - python3-psycopg2
+  - postgresql12-contrib  
   - postgresql-libs
   - postgresql-devel
   - python-psycopg2
+  - libsemanage-python 
 
 
 #Install and enable repo
@@ -23,8 +22,13 @@ service_name: postgresql-12
 
 #open firewall port for service
 
-firewall_service: postgresql
+service_name_firewall: postgresql
 
+#Configure SELinux with boolean
+
+
+#Config path
+postgresql_config_path: /var/lib/pgsql/12/data
 
 
 

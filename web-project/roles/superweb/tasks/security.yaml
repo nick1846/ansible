@@ -1,0 +1,18 @@
+---
+
+- name: Open firewall port for service  
+  firewalld:
+    service: "{{ service_name_firewall }}" 
+    zone: public
+    immediate: yes # this is the firewall-cmd --reload
+    permanent: true
+    state: enabled
+  when: service_name_firewall is defined
+
+
+- name: Configure SELinux with boolean   
+  seboolean:
+    name: "{{ service_name_selinux }}" 
+    state: true
+    persistent: yes
+  when: service_name_selinux is defined

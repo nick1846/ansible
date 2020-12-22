@@ -1,11 +1,10 @@
 ---
 #install packages
 
-packages: 
-  #- "*"
+packages:   
   - httpd
   - git
-  - epel-release.noarch
+  - epel-release
   - libsemanage-python 
   - php
   - php-cli 
@@ -17,7 +16,7 @@ packages:
   - php-pgsql
   - php-mcrypt
   - php-curl
-  - php-mysqlnd
+
 
 #Install and enable repo
 
@@ -50,15 +49,6 @@ service_name_selinux: httpd_can_network_connect_db
 
 #Copy files from [src_path] to [dest_path] 
 
-src_path: /home/ansible/web-project/docker-compose/web/ 
+src_path: /home/ansible/web-project/docker-compose/web/
 
 dest_path: /var/www/html/
-
-host: host=10.0.0.239
-
-
-  
-
-
-
-

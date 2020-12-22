@@ -11,7 +11,7 @@
   become_user: postgres 
   postgresql_user:     
     name: postgres
-    password: "postgres"   
+    password: postgres2020   
     encrypted: yes   
     state: present
   
